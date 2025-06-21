@@ -1,0 +1,59 @@
+
+#cat /usr/share/nginx/html/index.html 
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: bootcamp
+  name: bootcamp
+  namespace: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bootcamp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: bootcamp
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+##
+    volumeMounts:
+      - mountPath: /usr/share/nginx/html/index.html
+        name: lab-secret
+  volumes:
+  - name: volume-ngin
+      volume: /home/node-1/bootcamp/bootcamplab
+##
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: bootcamp
+  name: bootcamp
+  namespace: lab
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: bootcamp
+  type: NodePort
+status:
+  loadBalancer: {}
