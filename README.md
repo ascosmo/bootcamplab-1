@@ -56,3 +56,80 @@ node {
    }
    stage('Realizando o Deploy'){
      sh "sudo docker run --name meusite -p 8082:80 -d myapp"
+
+
+------------------
+   WORD
+
+Objetivos 
+Comandos para instalação do Java, Jenkins, Repositório para Git e Código do Pipeline.
+
+
+1.	Instalando o Java no Servidor Ubuntu – AWS
+
+$ sudo apt install openjdk-8-jre-headless 
+
+2.	Instalando o Jenkins ( Referência https://www.jenkins.io/download/)
+
+$ cd 
+
+$ pwd 
+
+Certificar que está em /home/ubuntu
+
+$ ls -ltr
+
+$ mkdir tools
+
+$ cd /tools
+
+$ wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+
+$ ls -ltr
+
+Subir o Jenkins com o comando abaixo e copiar as informações do InitialPassword
+
+$ java -jar jenkins.war 
+
+Executar “control + c” para finalizar o processo após a cópia do Initial password
+
+Certificar que o processo jenkins não está no ar
+
+$ps -ef | grep java
+
+Subir o processo em Background
+
+$java -jar jenkins.war & 
+
+
+
+3- Exemplo de Código para Upload no GIT
+
+Realizar download do pacote em: http://siteasap.com.br/bootcamp/site.zip
+
+4- Exemplo de código para Pipeline no Jenkins.
+
+Pipeline
+
+node {
+   def mvnHome
+   stage('Preparation') { // for display purposes
+      // Get some code from a GitHub repository
+      git 'https://github.com/XXXXXXX'
+     
+   }
+   stage('Docker Build') { // for display purposes
+      // Get some code from a GitHub repository
+      sh "sudo docker build -t myapp ."
+      
+   }
+   stage('Parando a aplicação') { // for display purposes
+      // Get some code from a GitHub repository
+      sh label: '', script: 'sudo docker run hello-world;sudo docker stop $(sudo docker ps -a -q); sudo docker container prune -f'
+      
+   }
+   stage('Realizando o Deploy'){
+     sh "sudo docker run --name meusite -p 8082:80 -d myapp"  
+   }
+}
+
